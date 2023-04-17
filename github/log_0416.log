@@ -1,0 +1,48 @@
+{'batch_size': 16, 'epochs': 80, 'eval_every_n_epochs': 1, 'fine_tune_from': 'pretrain', 'log_every_n_steps': 50, 'init_lr': 0.0001, 'init_base_lr': 0.0001, 'weight_decay': '1e-7', 'gpu': 'cuda:0', 'task_name': 'BBBP', 'model_type': 'gin', 'model_num': 'model.pth', 'pred_n_layer': 3, 'model': {'num_layer': 3, 'emb_dim': 300, 'feat_dim': 512, 'drop_ratio': 0.5, 'pool': 'mean'}, 'dataset': {'num_workers': 4, 'valid_size': 0.1, 'test_size': 0.1, 'task': 'classification', 'data_path': './data/property/BBBP.csv'}}
+Running on: cuda:0
+2038
+2038
+About to generate scaffolds
+Generating scaffold 0/2038
+Generating scaffold 1000/2038
+Generating scaffold 2000/2038
+About to sort in scaffold sets
+Pre-trained weights not found. Training from scratch.
+pred_head.0.weight True
+pred_head.0.bias True
+pred_head.2.weight True
+pred_head.2.bias True
+pred_head.4.weight True
+pred_head.4.bias True
+pred_head.6.weight True
+pred_head.6.bias True
+epoch： 0
+Validation loss: 0.5639541978929558 ROC AUC: 0.8167701863354037
+
+Test loss: 1.0582610777780121 Test ROC AUC: 0.5006262645726949
+Exception in thread Thread-2:
+Traceback (most recent call last):
+  File "/home/xxyu/anaconda3/envs/GCL/lib/python3.7/threading.py", line 926, in _bootstrap_inner
+    self.run()
+  File "/home/xxyu/anaconda3/envs/GCL/lib/python3.7/threading.py", line 870, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/xxyu/anaconda3/envs/GCL/lib/python3.7/site-packages/torch/utils/data/_utils/pin_memory.py", line 28, in _pin_memory_loop
+    idx, data = r
+ValueError: not enough values to unpack (expected 2, got 0)
+
+Traceback (most recent call last):
+  File "GCLmf_ft_property.py", line 310, in <module>
+    result = main(config)
+  File "GCLmf_ft_property.py", line 257, in main
+    fine_tune.train()
+  File "GCLmf_ft_property.py", line 104, in train
+    for bn, data in enumerate(train_loader):
+  File "/home/xxyu/github/dataset/dataset_ft_molproperty.py", line 164, in __iter__
+    return BackgroundGenerator(super().__iter__())
+  File "/home/xxyu/anaconda3/envs/GCL/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 349, in __iter__
+    self._iterator._reset(self)
+  File "/home/xxyu/anaconda3/envs/GCL/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 852, in _reset
+    data = self._get_data()
+  File "/home/xxyu/anaconda3/envs/GCL/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 1029, in _get_data
+    raise RuntimeError('Pin memory thread exited unexpectedly')
+RuntimeError: Pin memory thread exited unexpectedly
