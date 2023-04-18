@@ -11,6 +11,12 @@ pip install PyYAML
 conda install -c conda-forge rdkit=2020.09.1.0
 ```
 
+## Dataset 
+### pre-training data
+You can download the pre-training data and benchmarks used in the paper [here]([https://www.baidu.com/](https://drive.google.com/u/0/uc?id=16JTa7RjnJjxc8M1Ft73qgD3-1s3wtNBD&export=download)) and extract the file under ***./github/data*** folder.
+### fine-tuning data
+All the databases for fine-tuning are saved in ***./github/data***
+
 ## Pre-training
 To train the GCLmf, where the configurations and detailed explaination for each variable can be found in ***config_pretrain.yaml***  
 `python GCLmf_pre.py` 
