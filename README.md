@@ -13,7 +13,7 @@ conda install -c conda-forge rdkit=2020.09.1.0
 
 ## Dataset 
 ### pre-training data
-You can download the pre-training data and benchmarks used in the paper [here](https://www.baidu.com/](https://drive.google.com/u/0/uc?id=16JTa7RjnJjxc8M1Ft73qgD3-1s3wtNBD&export=download) and extract the file under ***./github/data*** folder.
+You can download the pre-training data and benchmarks used in the paper [here](https://drive.google.com/u/0/uc?id=16JTa7RjnJjxc8M1Ft73qgD3-1s3wtNBD&export=download) and extract the file under ***./github/data*** folder.
 ### fine-tuning data
 All the databases for fine-tuning are saved in ***./github/data***
 
