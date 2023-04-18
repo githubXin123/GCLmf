@@ -9,19 +9,19 @@ log_every_n_steps: 1000                 # print training log frequency
 
 init_lr: 0.001                          # initial learning rate for Adam
 weight_decay: 1e-5                      # weight decay for Adam
-gpu: cuda:1                             # training GPU  如果有多个GPU，指定用哪个GPU：0/1
+gpu: cuda:1                             # training GPU
 
 model: 
   num_layer: 3                          # number of graph conv layers
   emb_dim: 300                          # embedding dimension in graph conv layers
   feat_dim: 512                         # output feature dimention
-  drop_ratio: 0                        # dropout ratio
-  pool: mean                             # readout pooling (i.e., mean/max/add)
+  drop_ratio: 0                         # dropout ratio
+  pool: mean                            # readout pooling (i.e., mean/max/add)
 
 dataset:
-  num_workers: 16                       # dataloader number of workers（设定多线程并行处理的格式）
-  valid_size: 0.01                      # ratio of validation data（验证集占整个训练集的比例）
-  data_path: dataset/filter_frag24.txt # path of pre-training data
+  num_workers: 16                       # dataloader number of workers
+  valid_size: 0.01                      # ratio of validation data
+  data_path: data/filter_frag24.txt     # path of pre-training data
 
 loss:
   temperature: 0.3                      # temperature of NT-Xent loss
