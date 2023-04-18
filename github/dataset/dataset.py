@@ -29,11 +29,6 @@ from rdkit.Chem.rdchem import BondType as BT
 from rdkit.Chem import AllChem
 from rdkit.Chem.MolStandardize import rdMolStandardize
 
-from sarpy import SARpy
-from sarpy.SARpytools import *
-
-
-
 
 
 ATOM_LIST = list(range(0,119))
@@ -66,7 +61,7 @@ def get_feature(mol):
     atoms = mol.GetAtoms()
     bonds = mol.GetBonds()
     
-    for atom in atoms:  #断裂处的原子序号为0
+    for atom in atoms:
         type_idx.append(ATOM_LIST.index(atom.GetAtomicNum()))
 
     x1 = torch.tensor(type_idx, dtype=torch.long).view(-1,1)
@@ -75,7 +70,7 @@ def get_feature(mol):
     
     row, col, edge_feat = [], [], []
     for bond in mol.GetBonds():
-        start, end = bond.GetBeginAtomIdx(), bond.GetEndAtomIdx()   #对于一个键，start和end分别为组成该键的两个原子的编号
+        start, end = bond.GetBeginAtomIdx(), bond.GetEndAtomIdx()
         
         row += [start, end]
         col += [end, start]
