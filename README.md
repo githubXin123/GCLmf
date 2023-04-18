@@ -13,9 +13,13 @@ conda install -c conda-forge rdkit=2020.09.1.0
 
 ## Pre-training
 To train the GCLmf, where the configurations and detailed explaination for each variable can be found in ***config_pretrain.yaml***  
-`python molclr.py` 
-＃＃＃＃
+`python GCLmf_pre.py` 
 
+## Fine-tuning
+### molecular property benchmarks 
+`python GCLmf_ft_property.py` 
+### toxicity data sets
+`python GCLmf_ft_tox.py` 
   
 
 
