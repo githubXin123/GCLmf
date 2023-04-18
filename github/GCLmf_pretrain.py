@@ -9,15 +9,18 @@ from queue import Queue
 from threading import Thread
 
 import torch.nn.functional as F
-from torch.utils.tensorboard import SummaryWriter
+# from torch.utils.tensorboard import SummaryWriter
 from torch.optim.lr_scheduler import CosineAnnealingLR
 
-from utils.nt_xent_loss import NTXentLoss, AverageMeter
+from utils.nt_xent_loss import NTXentLoss
 import timm
 import timm.optim
 import timm.scheduler
 
 from bisect import bisect_right
+
+import torch.multiprocessing
+torch.multiprocessing.set_sharing_strategy('file_system')
 
 
 def _save_config_file(model_checkpoints_folder):
@@ -32,12 +35,11 @@ class GCLmf(object):
         
         dir_name = datetime.now().strftime('%b%d_%H-%M-%S')
         log_dir = os.path.join('ckpt', dir_name)   
-        self.writer = SummaryWriter(log_dir=log_dir)
+        self.model_path = log_dir
+        # self.writer = SummaryWriter(log_dir=log_dir)
 
         self.dataset = dataset
         self.nt_xent_criterion = NTXentLoss(self.device, config['batch_size'], **config['loss'])
-        self.align_meter = AverageMeter(self.device, 'align_loss')
-        self.unif_meter = AverageMeter(self.device, 'uniform_loss')
         self.mol_embedding  = ['xj_1','xj_2','xj_3','xj_4','xj_5','xj_6',
                                 'xj_7','xj_8','xj_9','xj_10','xj_11','xj_12',
                                 'xj_13','xj_14','xj_15','xj_16','xj_17','xj_18',
@@ -95,7 +97,7 @@ class GCLmf(object):
         )
         
 
-        model_checkpoints_folder = os.path.join(self.writer.log_dir, 'checkpoints') 
+        model_checkpoints_folder = os.path.join(self.model_path, 'checkpoints') 
         # save config file
         _save_config_file(model_checkpoints_folder)
 
@@ -117,10 +119,10 @@ class GCLmf(object):
 
 
                 if n_iter % self.config['log_every_n_steps'] == 0:  
-                    self.writer.add_scalar('train_loss', loss, global_step=n_iter)
-                    self.writer.add_scalar('cosine_lr_decay', optimizer.param_groups[0]['lr'], global_step=n_iter)
+                    # self.writer.add_scalar('train_loss', loss, global_step=n_iter)
+                    # self.writer.add_scalar('cosine_lr_decay', optimizer.param_groups[0]['lr'], global_step=n_iter)
 
-                    print(epoch_counter, bn, loss.item()) 
+                    print('--training--','epoch: ', epoch_counter, 'miniBatch: ', bn, 'loss: ', loss.item()) 
 
                 loss.backward()
                 
@@ -131,10 +133,10 @@ class GCLmf(object):
             # validate the model if requested
             if epoch_counter % self.config['eval_every_n_epochs'] == 0:
                 valid_loss = self._validate(model, valid_loader)    
-                print(epoch_counter, bn, valid_loss, '(validation)')
+                print('epoch:', epoch_counter, 'valid loss:', valid_loss)
                 if valid_loss < best_valid_loss:
                     best_valid_loss = valid_loss
-                self.writer.add_scalar('validation_loss', valid_loss, global_step=valid_n_iter)
+                # self.writer.add_scalar('validation_loss', valid_loss, global_step=valid_n_iter)
                 valid_n_iter += 1
             
             #save model
@@ -143,8 +145,8 @@ class GCLmf(object):
             
     def _load_pre_trained_weights(self, model):
         try:
-            checkpoints_folder = os.path.join('./ckpt', self.config['load_model'], 'checkpoints')
-            state_dict = torch.load(os.path.join(checkpoints_folder, 'model_5.pth'))
+            checkpoints_folder = os.path.join('./ckpt', self.config['load_model'])
+            state_dict = torch.load(os.path.join(checkpoints_folder, 'model_4.pth'))
             model.load_state_dict(state_dict)
             print("Loaded pre-trained model with success.")
         except FileNotFoundError:
