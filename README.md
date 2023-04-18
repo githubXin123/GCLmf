@@ -2,7 +2,7 @@
 GCLmf: A novel molecular graph contrastive learning framework based on hard negatives and application in toxicity prediction
 
 ## Requirements
- *python 3.7 
+   * python 3.7 
 ### install requirements
 ```
 pip install torch==1.7.1+cu101 torchvision==0.8.2+cu101 -f https://download.pytorch.org/whl/torch_stable.html  
