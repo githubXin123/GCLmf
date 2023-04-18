@@ -7,7 +7,6 @@ from torch_geometric.utils import add_self_loops
 from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool
 
 num_atom_type = 119
-
 num_bond_type = 5
 
 class GINEConv(MessagePassing):
@@ -43,15 +42,6 @@ class GINEConv(MessagePassing):
 
 
 class GINet(nn.Module):
-    """
-    Args:
-        num_layer (int): the number of GNN layers
-        emb_dim (int): dimensionality of embeddings                                                
-        drop_ratio (float): dropout rate
-        gnn_type: gin, gcn, graphsage, gat
-    Output:
-        node representations
-    """
     def __init__(self, 
         task='classification', num_layer=5, emb_dim=300, feat_dim=512, 
         drop_ratio=0, pool='mean', pred_n_layer=2
