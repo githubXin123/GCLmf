@@ -134,13 +134,8 @@ class GCLmf(object):
             if epoch_counter % self.config['eval_every_n_epochs'] == 0:
                 valid_loss = self._validate(model, valid_loader)    
                 print('epoch:', epoch_counter, 'valid loss:', valid_loss)
-                if valid_loss < best_valid_loss:
-                    best_valid_loss = valid_loss
-                # self.writer.add_scalar('validation_loss', valid_loss, global_step=valid_n_iter)
-                valid_n_iter += 1
-            
+
             #save model
-            if (epoch_counter+1) % self.config['save_every_n_epochs'] == 0:
                 torch.save(model.state_dict(), os.path.join(model_checkpoints_folder, 'model_{}.pth'.format(str(epoch_counter))))
             
     def _load_pre_trained_weights(self, model):
