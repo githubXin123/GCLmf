@@ -1,6 +1,3 @@
-#修改的地方:导入预训练的模型时，注意文件存储的位置，和导入文件的具体名称
-
-
 import os
 import shutil
 import sys
@@ -38,7 +35,7 @@ class GCLmf(object):
         self.writer = SummaryWriter(log_dir=log_dir)
 
         self.dataset = dataset
-        self.nt_xent_criterion = NTXentLoss(self.device, config['batch_size'], **config['loss'])    #**用于传递关键字参数
+        self.nt_xent_criterion = NTXentLoss(self.device, config['batch_size'], **config['loss'])
         self.align_meter = AverageMeter(self.device, 'align_loss')
         self.unif_meter = AverageMeter(self.device, 'uniform_loss')
         self.mol_embedding  = ['xj_1','xj_2','xj_3','xj_4','xj_5','xj_6',
@@ -146,7 +143,7 @@ class GCLmf(object):
             
     def _load_pre_trained_weights(self, model):
         try:
-            checkpoints_folder = os.path.join('./ckpt', self.config['load_model'], 'checkpoints')   #结果为一个路径
+            checkpoints_folder = os.path.join('./ckpt', self.config['load_model'], 'checkpoints')
             state_dict = torch.load(os.path.join(checkpoints_folder, 'model_5.pth'))
             model.load_state_dict(state_dict)
             print("Loaded pre-trained model with success.")
