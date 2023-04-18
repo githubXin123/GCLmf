@@ -13,7 +13,6 @@ from threading import Thread
 
 import torch
 import torch.nn.functional as F
-# from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.sampler import SubsetRandomSampler, SequentialSampler
 import torchvision.transforms as transforms
 
@@ -29,7 +28,8 @@ from rdkit.Chem.rdchem import BondType as BT
 from rdkit.Chem import AllChem
 from rdkit.Chem.MolStandardize import rdMolStandardize
 
-
+import torch.multiprocessing
+torch.multiprocessing.set_sharing_strategy('file_system')
 
 ATOM_LIST = list(range(0,119))
 
@@ -54,8 +54,6 @@ def read_smiles(data_path):
 
 #get the feature of the molecule
 def get_feature(mol):
-
-
     type_idx = []
 
     atoms = mol.GetAtoms()
@@ -101,7 +99,7 @@ class MoleculeDataset(Dataset):
         mol_number = index * 25
         mol_00 = Chem.MolFromSmiles(self.smiles_data[mol_number])
 
-        data_00 = get_mask(mol_00)
+        data_00 = get_feature(mol_00)
         data_01 = data_00
         data_list = ['data_1','data_2','data_3','data_4','data_5','data_6',
                     'data_7','data_8','data_9','data_10','data_11','data_12',
@@ -117,7 +115,7 @@ class MoleculeDataset(Dataset):
         
         for i in range(24):
             globals()[mol_list[i]] = Chem.AddHs(Chem.MolFromSmiles(self.smiles_data[mol_number+i+1]))
-            globals()[data_list[i]] = get_mask(globals()[mol_list[i]])
+            globals()[data_list[i]] = get_feature(globals()[mol_list[i]])
 
         a = []
         a.append(data_00)
@@ -165,9 +163,9 @@ class MoleculeDatasetWrapper(object):
         valid_sampler = SubsetRandomSampler(valid_idx)
 
         train_loader =  DataLoaderX(train_dataset, batch_size=self.batch_size, sampler=train_sampler,
-                                  num_workers=self.num_workers, drop_last=True, pin_memory=True, persistent_workers=True)
+                                  num_workers=self.num_workers, drop_last=True, pin_memory=True, persistent_workers=False)
 
         valid_loader =  DataLoaderX(train_dataset, batch_size=self.batch_size, sampler=valid_sampler,
-                                  num_workers=self.num_workers, drop_last=True, pin_memory=True, persistent_workers=True)
+                                  num_workers=self.num_workers, drop_last=True, pin_memory=True, persistent_workers=False)
 
         return train_loader, valid_loader
