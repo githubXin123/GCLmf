@@ -141,7 +141,7 @@ class GCLmf(object):
     def _load_pre_trained_weights(self, model):
         try:
             checkpoints_folder = os.path.join('./ckpt', self.config['load_model'])
-            state_dict = torch.load(os.path.join(checkpoints_folder, 'model_4.pth'))
+            state_dict = torch.load(os.path.join(checkpoints_folder, 'model.pth'))
             model.load_state_dict(state_dict)
             print("Loaded pre-trained model with success.")
         except FileNotFoundError:
