@@ -125,8 +125,6 @@ class FineTune(object):
                 valid_loss, valid_rgr = self._validate(model, valid_loader)
             self._test(model, test_loader, model_num = None)
             
-            
-            # validate the model if requested
             if epoch_counter >= (self.config['epochs'])/2:
                 if self.config['dataset']['task'] == 'classification': 
                     if valid_cls > best_valid_cls:
