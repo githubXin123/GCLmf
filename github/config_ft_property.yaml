@@ -1,0 +1,34 @@
+﻿batch_size: 32                  # batch size
+epochs: 80                   # total number of epochs5
+eval_every_n_epochs: 1          # validation frequency
+fine_tune_from: none  # sub directory of pre-trained model in ./ckpt
+# fine_tune_from: log_0728  # sub directory of pre-trained model in ./ckpt
+log_every_n_steps: 50           # print training log frequency
+fp16_precision: False           # float precision 16 (i.e. True/False)           # initial learning rate for the base GNN encoder
+init_lr: 0.0005                 # initial learning rate for the prediction head
+init_base_lr: 0.005                      # initial learning rate for the base GNN encoder
+weight_decay: 1e-5                        # weight decay of Adam
+gpu: cuda:0                               # training GPU
+task_name: Cardiotoxicity1               #inlcuding Cardiotoxicity1/5/10/30、Carcinogenicity、Acute_oral_toxicity、Ames、EC、EI
+                                #BCF、CYP2C9、LC50、LC50DM、NR_ER、NR_PPAR_gamma、IGC50、'NR_AR', 'NR_AR_LBD', 'NR-AhR', 'NR_Aromatase', 'NR_ER', 'NR_ER_LBD', 'NR_PPAR_gamma', 'SR-ARE', 'SR-ATAD5', 'SR_HSE', 'SR-MMP', 'SR-p53'
+
+# add_weight: False
+# add_weight: True
+ration_neg: 1.56
+ration_pos: 1
+
+# seed: 0
+model_num: model_7.pth
+pred_n_layer: 2
+model_type: gin                   # GNN backbone (i.e., gin/gcn)
+model: 
+  num_layer: 3                    # number of graph conv layers
+  emb_dim: 300                    # embedding dimension in graph conv layers
+  feat_dim: 512                   # output feature dimention
+  drop_ratio: 0.5                 # dropout ratio
+  pool: mean                 # readout pooling (i.e., mean/max/add)
+
+dataset:
+  num_workers: 8               # dataloader number of workers
+  valid_size: 0.1               # ratio of validation data
+  test_size: 0.1                # ratio of test data
